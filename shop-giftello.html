@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Giftello - Premium Gift Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #8A2BE2;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #8A2BE2;
+        }
+
+        .cart-link {
+            position: relative;
+            background: #8A2BE2;
+            color: white !important;
+            padding: 10px 15px;
+            border-radius: 25px;
+        }
+
+        .admin-link {
+            background: #DA70D6;
+            color: white !important;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF69B4;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #8A2BE2 0%, #DA70D6 100%);
+            color: white;
+            text-align: center;
+            padding: 150px 0 100px;
+            margin-top: -100px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: #8A2BE2;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Products */
+        .featured-products {
+            padding: 80px 0;
+            background: #F8F4FF;
+        }
+
+        .featured-products h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #8A2BE2;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: #8A2BE2;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: inline-block;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #7B68EE;
+        }
+
+        .btn-secondary {
+            background: #DA70D6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Product Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #8A2BE2;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 40px 0;
+        }
+
+        .content-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.1);
+            margin: 20px 0;
+        }
+
+        .content-box h3 {
+            color: #8A2BE2;
+            margin-bottom: 15px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E6E6FA;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8A2BE2;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* Cart Styles */
+        .cart-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+
+        /* Admin Styles */
+        .admin-section {
+            background: #F8F4FF;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8A2BE2;
+        }
+
+        .contact-request {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.1);
+            border-left: 4px solid #8A2BE2;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .request-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            color: #DA70D6;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-section a:hover {
+            color: #DA70D6;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #8A2BE2;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: #7B68EE;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            color: #ccc;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-gift"></i>
+                <span>Shop Giftello</span>
+            </div>
+            <div class="nav-menu">
+                <a class="nav-item active" onclick="showSection('home')">Home</a>
+                <a class="nav-item" onclick="showSection('shop')">Shop</a>
+                <a class="nav-item" onclick="showSection('about')">About</a>
+                <a class="nav-item" onclick="showSection('contact')">Contact</a>
+                <a class="nav-item cart-link" onclick="showSection('cart')">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <a class="nav-item admin-link" onclick="showSection('admin')">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME SECTION -->
+    <section id="home" class="section active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Shop Giftello</h1>
+                <p>Discover premium gifts and handcrafted treasures for every occasion</p>
+                <a class="cta-btn" onclick="showSection('shop')">Shop Now</a>
+            </div>
+        </div>
+
+        <div class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="products-grid" id="featured-products">
+                    <!-- Products loaded by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-gift"></i>
+                        <h3>Premium Gifts</h3>
+                        <p>Carefully curated collection of premium gifts for every special occasion</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Made with Love</h3>
+                        <p>Every item is selected with care and attention to quality and craftsmanship</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Fast Delivery</h3>
+                        <p>Quick and secure delivery across Pakistan with careful packaging</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOP SECTION -->
+    <section id="shop" class="section">
+        <div class="content-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 50px;">All Products</h2>
+                <div class="products-grid" id="shop-products">
+                    <!-- Products loaded by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="section">
+        <div class="content-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px;">About Shop Giftello</h2>
+                
+                <div class="content-box">
+                    <h3>Our Story</h3>
+                    <p>Shop Giftello is your premier destination for unique and premium gifts. We specialize in bringing you the finest handcrafted items and carefully selected products that make perfect gifts for your loved ones.</p>
+                </div>
+
+                <div class="content-box">
+                    <h3>Our Mission</h3>
+                    <p>To make gift-giving special and memorable by offering a curated collection of premium products. We believe every gift should tell a story and create lasting memories.</p>
+                </div>
+
+                <div class="content-box">
+                    <h3>Why Choose Shop Giftello?</h3>
+                    <p>We carefully select each item in our collection to ensure quality, uniqueness, and value. Our products are perfect for birthdays, anniversaries, festivals, and any special occasion that deserves a thoughtful gift.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="section">
+        <div class="content-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px;">Contact Us</h2>
+                
+                <div class="content-box" style="max-width: 600px; margin: 0 auto;">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject:</label>
+                            <input type="text" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message:</label>
+                            <textarea name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                    <div id="form-message" class="hidden" style="margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART SECTION -->
+    <section id="cart" class="section">
+        <div class="content-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px;">Shopping Cart</h2>
+                
+                <div id="cart-items">
+                    <div class="cart-empty">
+                        <p>Your cart is empty. Add some products to see them here!</p>
+                        <button class="btn-primary" onclick="showSection('shop')" style="margin-top: 20px;">Continue Shopping</button>
+                    </div>
+                </div>
+                
+                <div id="cart-total" class="hidden" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(138, 43, 226, 0.1); text-align: center; margin-top: 20px;">
+                    <!-- Cart total will be shown here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN SECTION -->
+    <section id="admin" class="section admin-section">
+        <div class="content-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px;">Admin Dashboard</h2>
+                
+                <!-- Admin Stats -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-products">0</div>
+                        <div>Total Products</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-contacts">0</div>
+                        <div>Contact Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-orders">0</div>
+                        <div>Total Orders</div>
+                    </div>
+                </div>
+
+                <!-- Contact Requests -->
+                <div class="content-box">
+                    <h3>Contact Requests</h3>
+                    <div id="contact-requests">
+                        <p style="text-align: center; color: #666;">No contact requests yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Product Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img id="modal-image" class="modal-image" src="" alt="">
+                </div>
+                <div>
+                    <h3 id="modal-product-title"></h3>
+                    <div id="modal-price" style="font-size: 2rem; color: #8A2BE2; font-weight: bold; margin: 20px 0;"></div>
+                    <p id="modal-description" style="margin-bottom: 20px;"></p>
+                    <div id="modal-details" style="margin-bottom: 20px;">
+                        <h4>Product Details:</h4>
+                        <ul id="modal-features"></ul>
+                    </div>
+                    <button class="btn-primary" id="modal-add-cart" style="width: 100%;">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Shop Giftello</h4>
+                    <p>Your premier destination for unique and premium gifts. Making every occasion special.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a onclick="showSection('home')">Home</a>
+                    <a onclick="showSection('shop')">Shop</a>
+                    <a onclick="showSection('about')">About</a>
+                    <a onclick="showSection('contact')">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Shop Giftello. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product data with PKR prices
+        const products = [
+            {
+                id: 1,
+                name: "Premium Gift Bracelet",
+                price: 12500,
+                image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=300&fit=crop",
+                description: "Beautiful premium bracelet perfect for gifting, crafted with care using natural stones.",
+                features: ["Natural stones", "Adjustable size", "Premium quality", "Gift packaging included"]
+            },
+            {
+                id: 2,
+                name: "Decorative Gift Vase",
+                price: 37500,
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                description: "Elegant decorative vase perfect for home decoration and as a thoughtful gift.",
+                features: ["Hand-painted", "Premium ceramic", "Unique design", "Perfect for flowers"]
+            },
+            {
+                id: 3,
+                name: "Luxury Warm Scarf",
+                price: 30000,
+                image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=300&fit=crop",
+                description: "Luxurious warm scarf made with premium materials, perfect for winter gifting.",
+                features: ["Premium wool", "Soft texture", "Multiple colors", "Luxury packaging"]
+            },
+            {
+                id: 4,
+                name: "Wooden Gift Coasters Set",
+                price: 20000,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Premium wooden coaster set, perfect gift for tea and coffee lovers.",
+                features: ["Set of 4 pieces", "Premium wood", "Engraved design", "Gift box included"]
+            },
+            {
+                id: 5,
+                name: "Premium Coffee Mug",
+                price: 15000,
+                image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=400&h=300&fit=crop",
+                description: "Premium ceramic coffee mug with unique design, perfect for coffee enthusiasts.",
+                features: ["Premium ceramic", "Unique glaze", "Perfect size", "Dishwasher safe"]
+            },
+            {
+                id: 6,
+                name: "Luxury Cushion Cover",
+                price: 22500,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Luxury embroidered cushion cover that adds elegance to any living space.",
+                features: ["Hand-embroidered", "Premium fabric", "Elegant design", "Removable cover"]
+            },
+            {
+                id: 7,
+                name: "Premium Storage Basket",
+                price: 18750,
+                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+                description: "Premium storage basket made from natural materials, perfect for home organization.",
+                features: ["Natural materials", "Handwoven", "Storage solution", "Eco-friendly"]
+            },
+            {
+                id: 8,
+                name: "Luxury Leather Journal",
+                price: 27500,
+                image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=300&fit=crop",
+                description: "Luxury leather journal with premium paper, perfect for writers and professionals.",
+                features: ["Genuine leather", "Premium paper", "Elegant design", "Perfect for writing"]
+            },
+            {
+                id: 9,
+                name: "Premium Dinner Plates Set",
+                price: 50000,
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                description: "Premium dinner plates set with beautiful finish for elegant dining experiences.",
+                features: ["Set of 4 plates", "Premium ceramic", "Elegant finish", "Microwave safe"]
+            },
+            {
+                id: 10,
+                name: "Luxury Wall Decoration",
+                price: 21250,
+                image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=300&fit=crop",
+                description: "Luxury wall decoration made with premium materials, perfect for modern homes.",
+                features: ["Premium materials", "Handcrafted", "Modern design", "Easy installation"]
+            }
+        ];
+
+        // Shopping cart
+        class ShoppingCart {
+            constructor() {
+                this.items = this.loadCart();
+                this.updateCartCount();
+            }
+
+            loadCart() {
+                const savedCart = localStorage.getItem('giftello-cart');
+                return savedCart ? JSON.parse(savedCart) : [];
+            }
+
+            saveCart() {
+                localStorage.setItem('giftello-cart', JSON.stringify(this.items));
+                this.updateCartCount();
+            }
+
+            addItem(productId) {
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+
+                const existingItem = this.items.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    this.items.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        quantity: 1
+                    });
+                }
+                
+                this.saveCart();
+                this.showNotification(`${product.name} added to cart!`);
+                this.renderCart();
+            }
+
+            removeItem(productId) {
+                this.items = this.items.filter(item => item.id !== productId);
+                this.saveCart();
+                this.renderCart();
+            }
+
+            clearCart() {
+                this.items = [];
+                this.saveCart();
+                this.renderCart();
+            }
+
+            updateCartCount() {
+                const cartCount = document.querySelector('.cart-count');
+                if (cartCount) {
+                    const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
+                    cartCount.textContent = totalItems;
+                    cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+                }
+            }
+
+            getTotal() {
+                return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: #8A2BE2;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    z-index: 1001;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            renderCart() {
+                const cartContainer = document.getElementById('cart-items');
+                const cartTotal = document.getElementById('cart-total');
+                
+                if (this.items.length === 0) {
+                    cartContainer.innerHTML = `
+                        <div class="cart-empty">
+                            <p>Your cart is empty. Add some products to see them here!</p>
+                            <button class="btn-primary" onclick="showSection('shop')" style="margin-top: 20px;">Continue Shopping</button>
+                        </div>
+                    `;
+                    cartTotal.classList.add('hidden');
+                    return;
+                }
+
+                cartContainer.innerHTML = this.items.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <h4>${item.name}</h4>
+                            <p>Quantity: ${item.quantity} | Price: PKR ${item.price.toLocaleString()}</p>
+                        </div>
+                        <button class="btn-primary" onclick="cart.removeItem(${item.id})" style="background: #DA70D6;">Remove</button>
+                    </div>
+                `).join('');
+
+                cartTotal.innerHTML = `
+                    <h3>Order Summary</h3>
+                    <div style="font-size: 2rem; color: #8A2BE2; font-weight: bold; margin: 20px 0;">Total: PKR ${this.getTotal().toLocaleString()}</div>
+                    <button class="btn-primary" onclick="cart.clearCart()" style="background: #DA70D6;">Clear Cart</button>
+                `;
+                cartTotal.classList.remove('hidden');
+            }
+        }
+
+        // Contact requests management
+        class ContactManager {
+            constructor() {
+                this.requests = this.loadRequests();
+            }
+
+            loadRequests() {
+                const saved = localStorage.getItem('giftello-contacts');
+                return saved ? JSON.parse(saved) : [];
+            }
+
+            saveRequests() {
+                localStorage.setItem('giftello-contacts', JSON.stringify(this.requests));
+                this.updateAdminStats();
+            }
+
+            addRequest(formData) {
+                const request = {
+                    id: Date.now(),
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                };
+                
+                this.requests.unshift(request);
+                this.saveRequests();
+                this.renderRequests();
+            }
+
+            renderRequests() {
+                const container = document.getElementById('contact-requests');
+                
+                if (this.requests.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #666;">No contact requests yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = this.requests.map(request => `
+                    <div class="contact-request">
+                        <div class="request-header">
+                            <h4>${request.name}</h4>
+                            <span class="request-date">${request.date} at ${request.time}</span>
+                        </div>
+                        <p><strong>Email:</strong> ${request.email}</p>
+                        <p><strong>Subject:</strong> ${request.subject}</p>
+                        <p><strong>Message:</strong> ${request.message}</p>
+                    </div>
+                `).join('');
+            }
+
+            updateAdminStats() {
+                document.getElementById('total-products').textContent = products.length;
+                document.getElementById('total-contacts').textContent = this.requests.length;
+                document.getElementById('total-orders').textContent = cart.items.length;
+            }
+        }
+
+        // Initialize
+        const cart = new ShoppingCart();
+        const contactManager = new ContactManager();
+
+        // Navigation
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(sectionName).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (sectionName === 'cart') {
+                cart.renderCart();
+            } else if (sectionName === 'admin') {
+                contactManager.renderRequests();
+                contactManager.updateAdminStats();
+            }
+        }
+
+        // Product modal
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('modal-title').textContent = 'Product Details';
+            document.getElementById('modal-image').src = product.image;
+            document.getElementById('modal-product-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = `PKR ${product.price.toLocaleString()}`;
+            document.getElementById('modal-description').textContent = product.description;
+            
+            const featuresList = document.getElementById('modal-features');
+            featuresList.innerHTML = product.features.map(feature => `<li>${feature}</li>`).join('');
+            
+            document.getElementById('modal-add-cart').onclick = () => {
+                cart.addItem(productId);
+                closeModal();
+            };
+            
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        // Load products
+        function loadProducts() {
+            const featuredContainer = document.getElementById('featured-products');
+            const shopContainer = document.getElementById('shop-products');
+            
+            const productHTML = products.map(product => `
+                <div class="product-card" onclick="openProductModal(${product.id})">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">PKR ${product.price.toLocaleString()}</div>
+                        <p>${product.description.substring(0, 80)}...</p>
+                        <button class="btn-primary" onclick="event.stopPropagation(); cart.addItem(${product.id})">Add to Cart</button>
+                        <button class="btn-secondary" onclick="event.stopPropagation(); openProductModal(${product.id})">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            if (featuredContainer) featuredContainer.innerHTML = products.slice(0, 6).map(product => `
+                <div class="product-card" onclick="openProductModal(${product.id})">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">PKR ${product.price.toLocaleString()}</div>
+                        <p>${product.description.substring(0, 80)}...</p>
+                        <button class="btn-primary" onclick="event.stopPropagation(); cart.addItem(${product.id})">Add to Cart</button>
+                        <button class="btn-secondary" onclick="event.stopPropagation(); openProductModal(${product.id})">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            if (shopContainer) shopContainer.innerHTML = productHTML;
+        }
+
+        // Contact form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            contactManager.addRequest(formData);
+            
+            const messageDiv = document.getElementById('form-message');
+            messageDiv.style.background = '#8A2BE2';
+            messageDiv.style.color = 'white';
+            messageDiv.textContent = 'Thank you for your message! We will get back to you soon.';
+            messageDiv.classList.remove('hidden');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            contactManager.updateAdminStats();
+        });
+    </script>
+</body>
+</html>
